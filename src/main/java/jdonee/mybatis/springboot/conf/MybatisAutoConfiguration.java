@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -47,6 +48,9 @@ public class MybatisAutoConfiguration {
 
 	@Autowired(required = false)
 	private Interceptor[] interceptors;
+
+	// @Value("${mybatis.showTimeMillis}")
+	// private boolean showTimeMillis;
 
 	@Autowired
 	private ResourceLoader resourceLoader = new DefaultResourceLoader();
@@ -92,6 +96,7 @@ public class MybatisAutoConfiguration {
 	 * @return
 	 */
 	@Bean
+	@ConditionalOnProperty(name = "mybatis.showTimeMillis", havingValue = "true")
 	public PerformanceInterceptor performanceInterceptor(DataSource dataSource) {
 		log.info("注册MyBatis性能拦截器，用于输出每条 SQL 语句及其执行时间，会影响性能，仅推荐开发环境使用");
 		return new PerformanceInterceptor();

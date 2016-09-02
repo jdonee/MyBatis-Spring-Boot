@@ -4,6 +4,7 @@ logging:
 mybatis:
     mapper-locations: classpath*:mapper/*.xml
     type-aliases-package: jdonee.mybatis.springboot.model
+    showTimeMillis: true
     
 druid:
     loginUsername: admin
