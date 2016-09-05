@@ -11,6 +11,7 @@ import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -37,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Configuration
 @ConditionalOnClass({ SqlSessionFactory.class, SqlSessionFactoryBean.class })
-// @ConditionalOnBean(DataSource.class)
+@ConditionalOnBean(DataSource.class)
 @EnableConfigurationProperties(MybatisProperties.class)
 @AutoConfigureAfter(DataSourceAutoConfiguration.class)
 @Slf4j
@@ -96,7 +97,7 @@ public class MybatisAutoConfiguration {
 	 * @return
 	 */
 	@Bean
-	@ConditionalOnProperty(name = "mybatis.showTimeMillis", havingValue = "true")
+	@ConditionalOnProperty(prefix = "mybatis", name = "showTimeMillis", havingValue = "true")
 	public PerformanceInterceptor performanceInterceptor(DataSource dataSource) {
 		log.info("注册MyBatis性能拦截器，用于输出每条 SQL 语句及其执行时间，会影响性能，仅推荐开发环境使用");
 		return new PerformanceInterceptor();
